@@ -1,0 +1,200 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "garbage user interface",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "version 1.6 formally dyle's only fans. it's obvious why I changed it.",
+   LoadingSubtitle = "by cheese555 on discord",
+   ShowText = "trash", -- for mobile users to unhide Rayfield, change if you'd like
+   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from emitting warnings when the script has a version mismatch with the interface.
+
+   -- ScriptID = "sid_xxxxxxxxxxxx", -- Your Script ID from developer.sirius.menu — enables analytics, managed keys, and script hosting
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = ungoonable, -- Create a custom folder for your hub/game
+      FileName = "potassium"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include Discord.gg/. E.g. Discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the Discord every time they load it up
+   },
+
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "this cost $5.99 a month to access content. just kidding it's free. The key is: Tr@$h_¢@nn",
+      Note = "No method of getting the key is provided it's fucking free.", -- Use this to tell the user how to get a key
+      FileName = "goonable_37464", -- It is recommended to use something unique, as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- the user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {""} -- List of keys that the system will accept, can be RAW file links (pastebin, github, etc.) or simple strings ("hello", "key22")
+   }
+})
+
+local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
+local Section = Tab:CreateSection("basic garbage")
+
+Rayfield:Notify({
+   Title = "thank you for executing this",
+   Content = "exclusive trash ahead!",
+   Duration = 5,
+   Image = 4483362458,
+})
+
+local Slider = Tab:CreateSlider({
+   Name = "speed changer I guess",
+   Range = {0, 100},
+   Increment = 2,
+   Suffix = "speed",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file; make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
+   end,
+})
+
+local Slider = Tab:CreateSlider({
+   Name = "jump power to go boing?",
+   Range = {0, 500},
+   Increment = 2,
+   Suffix = "jumppower",
+   CurrentValue = 50,
+   Flag = "Slider2", -- A flag is the identifier for the configuration file; make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(jump)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = (jump)
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "infinite jump. script by OZZER on discord. does not gets disabled when enabled unfortunately.",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file; make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(infjump)
+    local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+player.CharacterAdded:Connect(function(char)
+    character = char
+    humanoid = char:WaitForChild("Humanoid")
+end)
+
+UserInputService.JumpRequest:Connect(function(infjump)
+    if humanoid then
+        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+    end
+end)
+   end,
+})
+
+local Input = Tab:CreateInput({
+	Name = "spin!!! zero is none",
+	CurrentValue = "0",
+	PlaceholderText = "Input spin speed",
+	RemoveTextAfterFocusLost = false,
+	Flag = "Input1",
+    Callback = function(text)
+    	local player = game.Players.LocalPlayer
+		local character = player.Character or player.CharacterAdded:Wait()
+		local root = character:WaitForChild("HumanoidRootPart")
+
+		local speed = tonumber(text)
+
+		if speed and speed ~= 0 then
+			task.spawn(function()
+				while task.wait() do
+					if not root.Parent then
+						break
+					end
+
+					root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(speed), 0)
+				end
+			end)
+		end
+	end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "esp. why not.",
+   Callback = function()
+   local Players = game:GetService("Players")
+
+local function applyHighlight(character)
+	if character:FindFirstChild("ESPHighlight") then
+		return
+	end
+
+	local highlight = Instance.new("Highlight")
+	highlight.Name = "ESPHighlight"
+	highlight.FillColor = Color3.fromRGB(255, 0, 0)
+	highlight.OutlineColor = Color3.fromRGB(255, 0, 0)
+	highlight.FillTransparency = 0.5
+	highlight.OutlineTransparency = 0
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Adornee = character
+	highlight.Parent = character
+end
+
+local function setupPlayer(player)
+	local function onCharacter(character)
+		applyHighlight(character)
+	end
+
+	if player.Character then
+		onCharacter(player.Character)
+	end
+
+	player.CharacterAdded:Connect(onCharacter)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do
+	setupPlayer(player)
+end
+
+Players.PlayerAdded:Connect(setupPlayer)-- The function that takes place when the button is pressed
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "kill aura. script from nixffmznixffmz55Ae on scriptblox.",
+   Callback = function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-I-Universal-Kill-Aura-I-6621"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "kill yourself. in the game. Don't do this irl pls",
+   Callback = function()
+    local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+character:BreakJoints()
+   end,
+})
+
+local Slider = Tab:CreateSlider({
+   Name = "health. completely visual does not work at all, but will still kill you if The value is zero.",
+   Range = {0, 100},
+   Increment = 1,
+   Suffix = "HP",
+   CurrentValue = 100,
+   Flag = "Slider999", -- A flag is the identifier for the configuration file; make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+    local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+humanoid.Health = Value
+   end,
+})
